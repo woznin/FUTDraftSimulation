@@ -29,7 +29,3 @@ class Zawodnik:
         print(f"OVR {self.ovr}")
         print(f"Pozycja {self.pozycja}")
 
-
-x = Zawodnik()
-x.przydziel_atrybuty()
-x.wyswietl_atrybuty()
