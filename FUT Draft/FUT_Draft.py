@@ -1,6 +1,7 @@
 import ttkbootstrap as ttk
-
+import random
 from Zawodnicy import Zawodnik
+
 
 
 def pokaz_opcje_turnieju():
@@ -173,3 +174,119 @@ przycisk_graj.grid(row=8, column=8, rowspan=4, columnspan=3)
 
 root.resizable(False, False)
 root.mainloop()
+
+
+
+
+
+
+#jest tu taka wstepna wersja rozgrywki meczu z karnymi, sprawdzałem na roznych przykladach i dziala w miare jest zroznicowanie wygranych i jezeli druzyna jest widocznie lepsza to ma duzo wiecej tyc wygranych
+#po wyborze zawodnikow sprawdz sobie wynik itpo podalem nizej jakas losowa 2 druzyne
+def rozklad_skladu(sklad):
+    lista = []
+    for zawodnik in sklad:
+        lista.append(zawodnik.ovr)
+    return lista
+
+def oceny(sklad):
+    nap = 0
+    pom = 0
+    obr = 0
+    br = 0
+    ocenki = []
+    for zawodnik in sklad:
+        if zawodnik.pozycja == "napastnik":
+            nap += zawodnik.ovr
+        elif zawodnik.pozycja == "pomocnik":
+            pom += zawodnik.ovr
+        elif zawodnik.pozycja == "obronca":
+            obr += zawodnik.ovr
+        elif zawodnik.pozycja == "bramkarz":
+            br = zawodnik.ovr
+    ocenki = [nap, pom, obr, br]
+    return ocenki
+
+
+
+def losuj_z_prawdopodobienstwem(prawdopodobienstwo_1):
+    choices = [0, 1]
+    wynik = random.choices(choices, weights=[1 - prawdopodobienstwo_1, prawdopodobienstwo_1])[0]
+    return wynik
+
+
+
+def karne(x, y):
+    karne_1 = 0
+    karne_2 = 0
+
+    for i in range(10):
+        p1 = x[i] / (x[i] + y[10])
+        if losuj_z_prawdopodobienstwem(p1) == 1:
+            karne_1 += 1
+
+        p2 = y[i] / (y[i] + x[10])
+        if losuj_z_prawdopodobienstwem(p2) == 1:
+            karne_2 += 1
+
+        print(f"{karne_1}:{karne_2}")
+        if karne_1 > karne_2:
+            wygrana_drużyna = "1"
+        else:
+            wygrana_drużyna = "2"
+
+        if i >= 4 and karne_1 > karne_2:
+            print("Wygrywa drużyna: ", wygrana_drużyna)
+            break
+        elif i >= 4 and karne_2 > karne_1:
+            print("wygrywa druzyna:", wygrana_drużyna)
+            break
+        elif i >= 2 and abs(karne_1 - karne_2) == 3:
+            print(" wygrywa drużyna:", wygrana_drużyna)
+            break
+        elif i >= 3 and abs(karne_1 - karne_2) >= 2:
+            print("wygrywa drużyna:", wygrana_drużyna)
+            break
+
+    return karne_1, karne_2
+def rozgrywka(x, y):
+    gole_1 = 0
+    gole_2 = 0
+
+    for _ in range(3):
+        # nap1 vs obr2
+        if x[0] >= y[2]:
+            p = x[0] / (x[0] + y[2])
+            if losuj_z_prawdopodobienstwem(p) == 1:
+                gole_1 += 1
+        # pom1 vs pom2
+        if x[1] >= y[1]:
+            p = x[1] / (x[1] + y[1])
+            if losuj_z_prawdopodobienstwem(p) == 1:
+                gole_1 += 1
+        if y[1] >= x[1]:
+            p = y[1] / (y[1] + x[1])
+            if losuj_z_prawdopodobienstwem(p) == 1:
+                gole_2 += 1
+        # nap2 vs obr1
+        if y[0] >= x[2]:
+            p = y[0] / (y[0] + x[2])
+            if losuj_z_prawdopodobienstwem(p) == 1:
+                gole_2 += 1
+
+
+
+    print(f"{gole_1}:{gole_2}")
+    if gole_1 > gole_2:
+        print("wygrywa drużyna 1:")
+    elif gole_1 < gole_2:
+        print("wygrywa drużyna 2:")
+    if gole_1 == gole_2:
+        print("Czeka nas dogrywka!")
+        karne(sklad_x,sklad_y)
+
+sklad_x = rozklad_skladu(sklad)
+sklad_y = [90, 90, 90, 80, 88, 80, 80, 80, 90, 90, 80]
+x = oceny(sklad)
+y = [240, 230, 330, 80]
+rozgrywka(x,y)
+
