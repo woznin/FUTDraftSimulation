@@ -3,7 +3,6 @@ import random
 from Zawodnicy import Zawodnik
 
 
-
 def pokaz_opcje_turnieju():
     przycisk_graj.grid_forget()
     przywitanie.configure(text='Wybierz rozmiar turnieju!')
@@ -72,6 +71,7 @@ def wybrano_zawodnika(ramka, zawodnik, przycisk_uzyty):
     if czy_zostaly_przyciski():
         przejdz_dalej = ttk.Button(root, text="przejdz dalej")
         przejdz_dalej.grid(row=15, column=16)
+
 
 def form_433():
     for przyciski in root.winfo_children():
@@ -163,9 +163,9 @@ global sklad
 sklad = []
 style1 = ttk.Style()
 style1.configure('NoBorder.TButton', borderwidth=0)
-for i in range(20):
-    root.columnconfigure(i, weight=1)
-    root.rowconfigure(i, weight=1)
+for u in range(20):
+    root.columnconfigure(u, weight=1)
+    root.rowconfigure(u, weight=1)
 przywitanie = ttk.Label(root, text='Witamy w symulatorze', font='Calibri 24')
 przycisk_graj = ttk.Button(root, text='Symuluj!', command=pokaz_opcje_turnieju)
 przywitanie.grid(row=2, column=10)
@@ -176,24 +176,23 @@ root.resizable(False, False)
 root.mainloop()
 
 
+#   jest tu taka wstepna wersja rozgrywki meczu z karnymi, sprawdzałem na roznych przykladach i dziala w miare
+#   jest zroznicowanie wygranych i jezeli druzyna jest widocznie lepsza to ma duzo wiecej tyc wygranych
+#   po wyborze zawodnikow sprawdz sobie wynik itpo podalem nizej jakas losowa 2 druzyne
 
 
-
-
-#jest tu taka wstepna wersja rozgrywki meczu z karnymi, sprawdzałem na roznych przykladach i dziala w miare jest zroznicowanie wygranych i jezeli druzyna jest widocznie lepsza to ma duzo wiecej tyc wygranych
-#po wyborze zawodnikow sprawdz sobie wynik itpo podalem nizej jakas losowa 2 druzyne
 def rozklad_skladu(sklad):
     lista = []
     for zawodnik in sklad:
         lista.append(zawodnik.ovr)
     return lista
 
+
 def oceny(sklad):
     nap = 0
     pom = 0
     obr = 0
     br = 0
-    ocenki = []
     for zawodnik in sklad:
         if zawodnik.pozycja == "napastnik":
             nap += zawodnik.ovr
@@ -207,12 +206,10 @@ def oceny(sklad):
     return ocenki
 
 
-
 def losuj_z_prawdopodobienstwem(prawdopodobienstwo_1):
     choices = [0, 1]
     wynik = random.choices(choices, weights=[1 - prawdopodobienstwo_1, prawdopodobienstwo_1])[0]
     return wynik
-
 
 
 def karne(x, y):
@@ -248,6 +245,8 @@ def karne(x, y):
             break
 
     return karne_1, karne_2
+
+
 def rozgrywka(x, y):
     gole_1 = 0
     gole_2 = 0
@@ -272,21 +271,130 @@ def rozgrywka(x, y):
             p = y[0] / (y[0] + x[2])
             if losuj_z_prawdopodobienstwem(p) == 1:
                 gole_2 += 1
+    if gole_1 >= gole_2:
+        return x
+    else:
+        return y
+
+    # print(f"{gole_1}:{gole_2}")
+    # if gole_1 > gole_2:
+    #     print("wygrywa drużyna 1:")
+    # elif gole_1 < gole_2:
+    #     print("wygrywa drużyna 2:")
+    # if gole_1 == gole_2:
+    #     print("Czeka nas dogrywka!")
+    #     karne(sklad_x,sklad_y)
 
 
+# sklad_x = rozklad_skladu(sklad)
+# sklad_y = [90, 90, 90, 80, 88, 80, 80, 80, 90, 90, 80]
+# x = oceny(sklad)
+# y = [240, 230, 330, 80]
+# rozgrywka(x,y)
 
-    print(f"{gole_1}:{gole_2}")
-    if gole_1 > gole_2:
-        print("wygrywa drużyna 1:")
-    elif gole_1 < gole_2:
-        print("wygrywa drużyna 2:")
-    if gole_1 == gole_2:
-        print("Czeka nas dogrywka!")
-        karne(sklad_x,sklad_y)
+def generuj_przeciwnikow(ilosc):
+    przeciwnicy = []
+    temp_form = [433, 442, 532]
+    for i in range(ilosc):
+        formacja = random.choice(temp_form)
+        poj_druzyna = []
+        if formacja == 433:
+            for j in range(3):
+                zawodnik = Zawodnik()
+                zawodnik.przydziel_atrybuty()
+                zawodnik.pozycja = 'napastnik'
+                poj_druzyna.append(zawodnik)
+            for z in range(3):
+                zawodnik = Zawodnik()
+                zawodnik.przydziel_atrybuty()
+                zawodnik.pozycja = 'pomocnik'
+                poj_druzyna.append(zawodnik)
+            for z in range(4):
+                zawodnik = Zawodnik()
+                zawodnik.przydziel_atrybuty()
+                zawodnik.pozycja = 'obronca'
+                poj_druzyna.append(zawodnik)
+            zawodnik = Zawodnik()
+            zawodnik.przydziel_atrybuty()
+            zawodnik.pozycja = 'bramkarz'
+            poj_druzyna.append(zawodnik)
+        elif formacja == 442:
+            for j in range(2):
+                zawodnik = Zawodnik()
+                zawodnik.przydziel_atrybuty()
+                zawodnik.pozycja = 'napastnik'
+                poj_druzyna.append(zawodnik)
+            for z in range(4):
+                zawodnik = Zawodnik()
+                zawodnik.przydziel_atrybuty()
+                zawodnik.pozycja = 'pomocnik'
+                poj_druzyna.append(zawodnik)
+            for z in range(4):
+                zawodnik = Zawodnik()
+                zawodnik.przydziel_atrybuty()
+                zawodnik.pozycja = 'obronca'
+                poj_druzyna.append(zawodnik)
+            zawodnik = Zawodnik()
+            zawodnik.przydziel_atrybuty()
+            zawodnik.pozycja = 'bramkarz'
+            poj_druzyna.append(zawodnik)
+        elif formacja == 532:
+            for j in range(2):
+                zawodnik = Zawodnik()
+                zawodnik.przydziel_atrybuty()
+                zawodnik.pozycja = 'napastnik'
+                poj_druzyna.append(zawodnik)
+            for z in range(3):
+                zawodnik = Zawodnik()
+                zawodnik.przydziel_atrybuty()
+                zawodnik.pozycja = 'pomocnik'
+                poj_druzyna.append(zawodnik)
+            for z in range(5):
+                zawodnik = Zawodnik()
+                zawodnik.przydziel_atrybuty()
+                zawodnik.pozycja = 'obronca'
+                poj_druzyna.append(zawodnik)
+            zawodnik = Zawodnik()
+            zawodnik.przydziel_atrybuty()
+            zawodnik.pozycja = 'bramkarz'
+            poj_druzyna.append(zawodnik)
+        przeciwnicy.append(poj_druzyna)
+    return przeciwnicy
 
-sklad_x = rozklad_skladu(sklad)
-sklad_y = [90, 90, 90, 80, 88, 80, 80, 80, 90, 90, 80]
-x = oceny(sklad)
-y = [240, 230, 330, 80]
-rozgrywka(x,y)
 
+def turniej():
+    druzyny = generuj_przeciwnikow(rozmiar-1)
+    druzyny.append(sklad)
+    przegrani = []
+    for i in range(len(druzyny)):
+        druzyny[i] = oceny(druzyny[i])
+    while len(druzyny) > 1:
+        zwyciezcy = []
+        for i in range(0, len(druzyny), 2):
+            druz1 = druzyny[i]
+            druz2 = druzyny[i+1]
+            wygrany = rozgrywka(druz1, druz2)
+            zwyciezcy.append(wygrany)
+            if wygrany == druz1:
+                przegrani.append(druz2)
+            else:
+                przegrani.append(druz1)
+        druzyny = zwyciezcy
+    return druzyny[0], przegrani
+
+
+result, uczestnicy = turniej()
+print(f"Zwycizyli{result}")
+print(f"Pozostali:{uczestnicy}")
+if result == oceny(sklad):
+    print("Twoja druzyna zajela 1 miejsce")
+else:
+    temp = uczestnicy.index(oceny(sklad))
+    if temp == 0:
+        print("Twoja druzyna zajela 2 miejsce")
+    elif temp <= 2:
+        print("Twoja druzyna zajela 3-4 miejsce")
+    elif temp <= 6:
+        print("Twoja druzyna zajela 5-8 miejsce")
+    else:
+        print("Twoja druzyna zajela 9-16 miejsce")
