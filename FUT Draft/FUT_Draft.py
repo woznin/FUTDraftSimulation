@@ -215,13 +215,15 @@ def losuj_z_prawdopodobienstwem(prawdopodobienstwo_1):
 def karne(x, y):
     karne_1 = 0
     karne_2 = 0
-
+    zawodnicy_x = (x[0] + x[1] + x[2]) / 10
+    zawodnicy_y = (y[0] + y[1] + y[2]) / 10
+    print(zawodnicy_x, zawodnicy_y)
     for i in range(10):
-        p1 = x[i] / (x[i] + y[10])
+        p1 = zawodnicy_x / (zawodnicy_x + y[3])
         if losuj_z_prawdopodobienstwem(p1) == 1:
             karne_1 += 1
 
-        p2 = y[i] / (y[i] + x[10])
+        p2 = zawodnicy_y / (zawodnicy_y + x[3])
         if losuj_z_prawdopodobienstwem(p2) == 1:
             karne_2 += 1
 
@@ -271,20 +273,14 @@ def rozgrywka(x, y):
             p = y[0] / (y[0] + x[2])
             if losuj_z_prawdopodobienstwem(p) == 1:
                 gole_2 += 1
-    if gole_1 >= gole_2:
-        return x
-    else:
-        return y
-
-    # print(f"{gole_1}:{gole_2}")
-    # if gole_1 > gole_2:
-    #     print("wygrywa drużyna 1:")
-    # elif gole_1 < gole_2:
-    #     print("wygrywa drużyna 2:")
-    # if gole_1 == gole_2:
-    #     print("Czeka nas dogrywka!")
-    #     karne(sklad_x,sklad_y)
-
+    print(f"{gole_1}:{gole_2}")
+    if gole_1 > gole_2:
+        print("wygrywa drużyna 1:")
+    elif gole_1 < gole_2:
+        print("wygrywa drużyna 2:")
+    if gole_1 == gole_2:
+        print("Czeka nas dogrywka!")
+        karne(x, y)
 
 # sklad_x = rozklad_skladu(sklad)
 # sklad_y = [90, 90, 90, 80, 88, 80, 80, 80, 90, 90, 80]
