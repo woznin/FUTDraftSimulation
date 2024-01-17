@@ -376,3 +376,19 @@ przycisk_graj.grid(row=8, column=8, rowspan=4, columnspan=3)
 root.resizable(False, False)
 root.mainloop()
 
+miejsce = []
+for i in range(30):
+    wygrany,uczestnicy = turniej()
+    if wygrany == oceny(sklad):
+        miejsce.append(1)
+    else:
+        temp = uczestnicy.index(oceny(sklad))
+        if temp == 14:
+            miejsce.append(2)
+        elif temp >= 12:
+            miejsce.append(3)
+        elif temp >= 8:
+            miejsce.append(4)
+        else:
+            miejsce.append(5)
+print(miejsce)
