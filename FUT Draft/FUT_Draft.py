@@ -1,5 +1,6 @@
 import ttkbootstrap as ttk
 import random
+import matplotlib.pyplot as plt
 from Zawodnicy import Zawodnik
 
 
@@ -39,7 +40,7 @@ def karne(x, y):
     karne_2 = 0
     zawodnicy_x = (x[0] + x[1] + x[2]) / 10
     zawodnicy_y = (y[0] + y[1] + y[2]) / 10
-    for i in range(10):
+    for i in range(20):
         p1 = zawodnicy_x / (zawodnicy_x + y[3])
         if losuj_z_prawdopodobienstwem(p1) == 1:
             karne_1 += 1
@@ -376,19 +377,53 @@ przycisk_graj.grid(row=8, column=8, rowspan=4, columnspan=3)
 root.resizable(False, False)
 root.mainloop()
 
-miejsce = []
+lista = []
 for i in range(30):
     wygrany,uczestnicy = turniej()
     if wygrany == oceny(sklad):
-        miejsce.append(1)
+        lista.append(1)
     else:
         temp = uczestnicy.index(oceny(sklad))
         if temp == 14:
-            miejsce.append(2)
+            lista.append(2)
         elif temp >= 12:
-            miejsce.append(3)
+            lista.append(3)
         elif temp >= 8:
-            miejsce.append(4)
+            lista.append(4)
         else:
-            miejsce.append(5)
-print(miejsce)
+            lista.append(5)
+print(lista)
+miejsce_1 = 0
+miejsce_2 = 0
+miejsce_3_4 = 0
+miejsce_5_8 = 0
+miejsce_9_16 = 0
+for i in range (len(lista)):
+    if lista[i] == 1:
+        miejsce_1 += 1
+    elif lista[i] == 2:
+        miejsce_2 += 1
+    elif lista[i] == 3:
+        miejsce_3_4 += 1
+    elif lista[i] == 4:
+        miejsce_5_8 += 1
+    else:
+        miejsce_9_16 += 1
+
+print("wyniki twojej drużyny w 30 turniejach:")
+print("1 miejsce :",miejsce_1)
+print("2 miejsce :",miejsce_2)
+print("3-4 miejsce :",miejsce_3_4)
+print("5-8 miejsce :",miejsce_5_8)
+print("9-16 miejsce :",miejsce_9_16)
+
+
+lista_miejsc = [miejsce_1,miejsce_2,miejsce_3_4,miejsce_5_8,miejsce_9_16]
+miejsca = ['1','2','3-4','5-8','9-16']
+
+
+plt.bar(miejsca, lista_miejsc, color='skyblue')
+plt.xlabel('Miejsce')
+plt.ylabel('Ilość')
+plt.title('Histogram ilości miejsc w 30 turniejach')
+plt.show()
