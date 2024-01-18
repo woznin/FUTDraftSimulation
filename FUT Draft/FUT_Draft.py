@@ -40,7 +40,7 @@ def karne(x, y):
     karne_2 = 0
     zawodnicy_x = (x[0] + x[1] + x[2]) / 10
     zawodnicy_y = (y[0] + y[1] + y[2]) / 10
-    for i in range(20):
+    for i in range(30):
         p1 = zawodnicy_x / (zawodnicy_x + y[3])
         if losuj_z_prawdopodobienstwem(p1) == 1:
             karne_1 += 1
@@ -378,7 +378,7 @@ root.resizable(False, False)
 root.mainloop()
 
 lista = []
-for i in range(30):
+for i in range(300):
     wygrany,uczestnicy = turniej()
     if wygrany == oceny(sklad):
         lista.append(1)
