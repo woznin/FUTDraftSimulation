@@ -1,6 +1,6 @@
 # FUTDraftSimulator
 
-Python-based project designed to simulate a Fifa-like Draft tournaments.
+Python-based project designed to simulate a Fifa-like Draft tournaments with UI made in upgraded tkinter library - ttkbootstrap.
 
 
 ## Details
@@ -10,3 +10,7 @@ Forward : Defender <br />
 Midfielder : Midfielder <br />
 Defender : Forward <br />
 The original algorithm used in FIFA games forced 3 goals to happen throughout the game. Our algorithm is based on probability and allows up to 6 goals, allowing games to end up a tie and be resolved using penalty kicks also based on probability system.
+
+## Preview
+<img width="394" alt="image" src="https://github.com/woznin/FUTDraftSimulation/assets/125309186/74144a15-77b6-4802-b857-b91c37932a70">
+
