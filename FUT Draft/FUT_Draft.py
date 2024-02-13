@@ -1,6 +1,5 @@
 import ttkbootstrap as ttk
 import random
-import matplotlib.pyplot as plt
 from Zawodnicy import Zawodnik
 
 
@@ -63,7 +62,7 @@ def karne(x, y):
         elif i >= 3 and abs(karne_1 - karne_2) >= 2:
             return wygrana_druzyna
         if i == 29:
-    return random.choice([x,y])
+            return random.choice([x,y])
 
 
 def rozgrywka(x, y):
@@ -393,4 +392,3 @@ przycisk_graj.grid(row=8, column=8, rowspan=4, columnspan=3)
 
 root.resizable(False, False)
 root.mainloop()
-
