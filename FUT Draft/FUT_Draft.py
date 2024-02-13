@@ -62,6 +62,8 @@ def karne(x, y):
             return wygrana_druzyna
         elif i >= 3 and abs(karne_1 - karne_2) >= 2:
             return wygrana_druzyna
+        if i == 29:
+    return random.choice([x,y])
 
 
 def rozgrywka(x, y):
@@ -266,15 +268,30 @@ def wyswietl_wynik_turnieju():
         wynik = ttk.Label(text="Twoja druzyna zajela 1 miejsce")
     else:
         temp = uczestnicy.index(oceny(sklad))
-        if temp == 14:
-            wynik = ttk.Label(text="Twoja druzyna zajela 2 miejsce")
-        elif temp >= 12:
-            wynik = ttk.Label(text="Twoja druzyna zajela 3-4 miejsce")
-        elif temp >= 8:
-            wynik = ttk.Label(text="Twoja druzyna zajela 5-8 miejsce")
+        if rozmiar == 4:
+            if temp == 2:
+                wynik = ttk.Label(text="Twoja druzyna zajela 2 miejsce")
+            else:
+                wynik = ttk.Label(text="Twoja druzyna zajela 3-4 miejsce")
+        elif rozmiar == 8:
+            if temp == 6:
+                wynik = ttk.Label(text="Twoja druzyna zajela 2 miejsce")
+            elif temp >=4:
+                wynik = ttk.Label(text="Twoja druzyna zajela 3-4 miejsce")
+            else:
+                wynik = ttk.Label(text="Twoja druzyna zajela 5-8 miejsce")
         else:
-            wynik = ttk.Label(text="Twoja druzyna zajela 9-16 miejsce")
+            if temp == 14:
+                wynik = ttk.Label(text="Twoja druzyna zajela 2 miejsce")
+            elif temp >= 12:
+                wynik = ttk.Label(text="Twoja druzyna zajela 3-4 miejsce")
+            elif temp >= 8:
+                wynik = ttk.Label(text="Twoja druzyna zajela 5-8 miejsce")
+            else:
+                wynik = ttk.Label(text="Twoja druzyna zajela 9-16 miejsce")
     wynik.pack()
+
+
 def form_433():
     for przyciski in root.winfo_children():
         przyciski.destroy()
@@ -377,53 +394,3 @@ przycisk_graj.grid(row=8, column=8, rowspan=4, columnspan=3)
 root.resizable(False, False)
 root.mainloop()
 
-lista = []
-for i in range(300):
-    wygrany,uczestnicy = turniej()
-    if wygrany == oceny(sklad):
-        lista.append(1)
-    else:
-        temp = uczestnicy.index(oceny(sklad))
-        if temp == 14:
-            lista.append(2)
-        elif temp >= 12:
-            lista.append(3)
-        elif temp >= 8:
-            lista.append(4)
-        else:
-            lista.append(5)
-print(lista)
-miejsce_1 = 0
-miejsce_2 = 0
-miejsce_3_4 = 0
-miejsce_5_8 = 0
-miejsce_9_16 = 0
-for i in range (len(lista)):
-    if lista[i] == 1:
-        miejsce_1 += 1
-    elif lista[i] == 2:
-        miejsce_2 += 1
-    elif lista[i] == 3:
-        miejsce_3_4 += 1
-    elif lista[i] == 4:
-        miejsce_5_8 += 1
-    else:
-        miejsce_9_16 += 1
-
-print("wyniki twojej drużyny w 30 turniejach:")
-print("1 miejsce :",miejsce_1)
-print("2 miejsce :",miejsce_2)
-print("3-4 miejsce :",miejsce_3_4)
-print("5-8 miejsce :",miejsce_5_8)
-print("9-16 miejsce :",miejsce_9_16)
-
-
-lista_miejsc = [miejsce_1,miejsce_2,miejsce_3_4,miejsce_5_8,miejsce_9_16]
-miejsca = ['1','2','3-4','5-8','9-16']
-
-
-plt.bar(miejsca, lista_miejsc, color='skyblue')
-plt.xlabel('Miejsce')
-plt.ylabel('Ilość')
-plt.title('Histogram ilości miejsc w 30 turniejach')
-plt.show()
